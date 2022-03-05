@@ -3,6 +3,15 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Category from 'App/Models/Category'
 
 export default class CategoriesController {
+
+    public async get({ response }: HttpContextContract) {
+        try {
+            const categories = await Category.all()
+            return response.created(categories)
+          } catch {
+            return response.status(400)
+        }
+    }
     
     public async create({ request, response }: HttpContextContract) {
         const categorySchema = schema.create({

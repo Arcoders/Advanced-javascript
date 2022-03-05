@@ -3,6 +3,27 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Course from 'App/Models/Course'
 
 export default class CoursesController {
+
+    public async get({ response }: HttpContextContract) {
+        try {
+            const courses = await Course.query().preload('categories')
+            return response.created(courses)
+          } catch {
+            return response.status(400)
+        }
+    }
+
+    public async find({ request, response }: HttpContextContract) {
+        const course_id = request.param('course_id');
+        try {
+            const course = await Course.findOrFail(course_id)
+            await course.load('categories')
+            return response.send(course)
+          } catch {
+            return response.status(400)
+        }
+    }
+
     public async create({ request, response }: HttpContextContract) {
         const courseSchema = schema.create({
             name: schema.string(
@@ -27,10 +48,9 @@ export default class CoursesController {
 
     public async delete({ request, response }: HttpContextContract) {
         const course_id = request.param('course_id');
-
         try {
-            const category = await Course.findOrFail(course_id)
-            await category.delete() 
+            const course = await Course.findOrFail(course_id)
+            await course.delete() 
             return response.status(200)
           } catch {
             return response.status(400)

@@ -29,11 +29,14 @@ Route.group(() => {
 Route.group(() => {
 
   Route.group(() => {
+    Route.get('/', 'CategoriesController.get')
     Route.post('/', 'CategoriesController.create')
     Route.delete('/:category_id', 'CategoriesController.delete')
   }).prefix('/category')
 
   Route.group(() => {
+    Route.get('/', 'CoursesController.get')
+    Route.get('/:course_id', 'CoursesController.find')
     Route.post('/', 'CoursesController.create')
     Route.delete('/:course_id', 'CoursesController.delete')
   }).prefix('/course')

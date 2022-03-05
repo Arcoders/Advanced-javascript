@@ -4,7 +4,7 @@ import User from 'App/Models/User'
 
 export default class AuthController {
 
-    public async register({ auth, request, response }: HttpContextContract) {
+    public async register({ request, response }: HttpContextContract) {
         const userSchema = schema.create({
             username: schema.string(
               { trim: true },

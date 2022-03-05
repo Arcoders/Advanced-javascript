@@ -18,8 +18,10 @@ export default class Course extends BaseModel {
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
-  @hasMany(() => Category)
-  public posts: HasMany<typeof Category>
+  @hasMany(() => Category, {
+    foreignKey: 'id',
+  })
+  public categories: HasMany<typeof Category>
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime

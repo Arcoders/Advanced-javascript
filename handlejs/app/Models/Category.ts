@@ -15,6 +15,8 @@ export default class Category extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @belongsTo(() => Course)
+  @belongsTo(() => Course, {
+    foreignKey: 'course_id',
+  })
   public course: BelongsTo<typeof Course>
 }
