@@ -6,20 +6,29 @@ export default class AuthController {
 
     public async register({ auth, request, response }: HttpContextContract) {
         const userSchema = schema.create({
-            username: schema.string({ trim: true }, [rules.unique({ table: 'users', column: 'username', caseInsensitive: true })]),
-            email: schema.string({ trim: true }, [rules.email(), rules.unique({ table: 'users', column: 'email', caseInsensitive: true })]),
-            password: schema.string({}, [rules.minLength(6)])
+            username: schema.string(
+              { trim: true },
+              [rules.unique({ table: 'users', column: 'username', caseInsensitive: true })]
+            ),
+            email: schema.string(
+              { trim: true }, 
+              [rules.email(), rules.unique({ table: 'users', column: 'email', caseInsensitive: true })]
+            ),
+            password: schema.string(
+              {}, 
+              [rules.minLength(6)]
+            )
         })
 
         const data = await request.validate({schema: userSchema})
-        const user = await User.create(data)
-
+        
         try {
-            const token = await auth.use('api').attempt(user.email, user.password)
-            return response.send({ token })
+          await User.create(data)
+          return response.created()
+
           } catch {
             return response.badRequest('Invalid credentials')
-          }
+        }
     }
 
     public async login({ auth, request, response }: HttpContextContract) {
@@ -31,7 +40,7 @@ export default class AuthController {
             return response.send({ token })
           } catch {
             return response.badRequest('Invalid credentials')
-          }
+        }
     }
 
 }

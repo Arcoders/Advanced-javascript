@@ -13,7 +13,7 @@ export default class Course extends BaseModel {
   public description: string
 
   @column()
-  public categories_id: number
+  public category_id: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
