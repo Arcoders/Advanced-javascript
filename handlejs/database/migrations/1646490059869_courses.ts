@@ -8,7 +8,7 @@ export default class Courses extends BaseSchema {
       table.increments('id')
       table.string('name', 50).notNullable().unique()
       table.text('description').notNullable()
-      table.integer('categories_id').unsigned().references('categories.id').onDelete('CASCADE')
+      table.integer('category_id').unsigned().references('id').inTable('categories').onDelete('CASCADE')
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })

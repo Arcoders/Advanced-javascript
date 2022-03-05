@@ -21,6 +21,22 @@
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.group(() => {
-  Route.post('/auth/register', 'AuthController.register')
-  Route.post('/auth/login', 'AuthController.login')
-}).prefix('/api')
+  Route.post('/register', 'AuthController.register')
+  Route.post('/login', 'AuthController.login')
+}).prefix('api/auth')
+
+
+Route.group(() => {
+
+  Route.group(() => {
+    Route.post('/', 'CategoriesController.create')
+    Route.delete('/:category_id', 'CategoriesController.delete')
+  }).prefix('/category')
+
+  Route.group(() => {
+    Route.post('/', 'CoursesController.create')
+    Route.delete('/:course_id', 'CoursesController.delete')
+  }).prefix('/course')
+
+}).prefix('/api').middleware('auth')
+
