@@ -1,13 +1,15 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Category from 'App/Models/Category'
+import Lesson from 'App/Models/Lesson'
+
 
 export default class CategoriesController {
 
     public async get({ response }: HttpContextContract) {
         try {
             const categories = await Category.all()
-            return response.created(categories)
+            return response.send(categories)
           } catch {
             return response.status(400)
         }
@@ -41,6 +43,16 @@ export default class CategoriesController {
           } catch {
             return response.status(400)
         }
+    }
 
+    public async getLessons({ request, response }: HttpContextContract) {
+        const category_id = request.param('category_id');
+
+        try {
+            const lessons = await Lesson.query().where('category_id', category_id)
+            return response.send(lessons)
+          } catch {
+            return response.status(400)
+        }
     }
 }

@@ -32,6 +32,7 @@ Route.group(() => {
     Route.get('/', 'CategoriesController.get')
     Route.post('/', 'CategoriesController.create')
     Route.delete('/:category_id', 'CategoriesController.delete')
+    Route.get('/:category_id', 'CategoriesController.getLessons')
   }).prefix('/category')
 
   Route.group(() => {
@@ -40,6 +41,11 @@ Route.group(() => {
     Route.post('/', 'CoursesController.create')
     Route.delete('/:course_id', 'CoursesController.delete')
   }).prefix('/course')
+
+  Route.group(() => {
+    Route.get('/', 'LessonsController.get')
+    Route.post('/', 'LessonsController.create')
+  }).prefix('/lesson')
 
 }).prefix('/api').middleware('auth')
 
