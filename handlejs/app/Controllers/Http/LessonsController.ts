@@ -5,7 +5,7 @@ import Lesson from 'App/Models/Lesson'
 export default class LessonsController {
     public async get({ response }: HttpContextContract) {
         try {
-            const lessons = await Lesson.all()
+            const lessons = await Lesson.query().preload('likes')
             return response.created(lessons)
           } catch {
             return response.status(400)

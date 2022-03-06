@@ -5,7 +5,7 @@ import Like from 'App/Models/Like'
 export default class LikesController {
     
 
-    public async create({ request, response }: HttpContextContract) {
+    public async like({ request, response }: HttpContextContract) {
         const likeSchema = schema.create({
             user_id: schema.number([
                 rules.exists({ table: 'users', column: 'id' })
@@ -17,8 +17,8 @@ export default class LikesController {
 
         const data = await request.validate({schema: likeSchema})
 
+        await Like.create(data)
         try {
-            await Like.create(data)
             return response.created()
           } catch {
             return response.status(400)

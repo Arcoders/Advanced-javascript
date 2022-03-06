@@ -49,7 +49,7 @@ Route.group(() => {
   }).prefix('/lesson')
 
   Route.group(() => {
-    Route.post('/', 'LessonsController.like')
+    Route.post('/', 'LikesController.like')
   }).prefix('/like')
 
 }).prefix('/api').middleware('auth')
