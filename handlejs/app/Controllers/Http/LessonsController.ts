@@ -21,12 +21,22 @@ export default class LessonsController {
                 rules.exists({ table: 'categories', column: 'id' })
               ]),
         })
-
-        const data = await request.validate({schema: lessonSchema})
-
-        await Lesson.create(data)
         try {
+            const data = await request.validate({schema: lessonSchema})
+            await Lesson.create(data)
             return response.created()
+          } catch {
+            return response.status(400)
+        }
+    }
+
+    public async delete({ request, response }: HttpContextContract) {
+        const lesson_id = request.param('lesson_id');
+
+        try {
+            const lesson = await Lesson.findOrFail(lesson_id)
+            await lesson.delete() 
+            return response.status(200)
           } catch {
             return response.status(400)
         }

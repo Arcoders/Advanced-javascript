@@ -10,7 +10,7 @@ export default class Lessons extends BaseSchema {
       table.string('description', 255).nullable()
       table.text('body').nullable()
       table.string('video_url', 255).nullable()
-      table.integer('category_id').unsigned().references('categories.id').nullable()
+      table.integer('category_id').unsigned().references('categories.id').nullable().onDelete('CASCADE')
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })

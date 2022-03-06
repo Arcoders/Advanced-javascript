@@ -45,7 +45,12 @@ Route.group(() => {
   Route.group(() => {
     Route.get('/', 'LessonsController.get')
     Route.post('/', 'LessonsController.create')
+    Route.delete('/:lesson_id', 'LessonsController.delete')
   }).prefix('/lesson')
+
+  Route.group(() => {
+    Route.post('/', 'LessonsController.like')
+  }).prefix('/like')
 
 }).prefix('/api').middleware('auth')
 
