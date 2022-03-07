@@ -5,7 +5,7 @@ import Lesson from 'App/Models/Lesson'
 export default class LessonsController {
     public async get({ response }: HttpContextContract) {
         try {
-            const lessons = await Lesson.all()
+            const lessons = await Lesson.query().preload('likes')
             return response.created(lessons)
           } catch {
             return response.status(400)
@@ -21,12 +21,22 @@ export default class LessonsController {
                 rules.exists({ table: 'categories', column: 'id' })
               ]),
         })
-
-        const data = await request.validate({schema: lessonSchema})
-
-        await Lesson.create(data)
         try {
+            const data = await request.validate({schema: lessonSchema})
+            await Lesson.create(data)
             return response.created()
+          } catch {
+            return response.status(400)
+        }
+    }
+
+    public async delete({ request, response }: HttpContextContract) {
+        const lesson_id = request.param('lesson_id');
+
+        try {
+            const lesson = await Lesson.findOrFail(lesson_id)
+            await lesson.delete() 
+            return response.status(200)
           } catch {
             return response.status(400)
         }

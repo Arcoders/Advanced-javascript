@@ -7,7 +7,7 @@ export default class CoursesController {
     public async get({ response }: HttpContextContract) {
         try {
             const courses = await Course.query().preload('categories')
-            return response.created(courses)
+            return response.send(courses)
           } catch {
             return response.status(400)
         }
