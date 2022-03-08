@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
-import Category from 'App/Models/Category'
+import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import User from 'App/Models/User'
 
-export default class Course extends BaseModel {
+export default class Role extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
@@ -12,17 +12,12 @@ export default class Course extends BaseModel {
   @column()
   public description: string
 
-  @column()
-  public category_id: number
-
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
-  @hasMany(() => Category, {
-    foreignKey: 'id',
-  })
-  public categories: HasMany<typeof Category>
-
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @hasMany(() => User)
+  public users: HasMany<typeof User>
 }
