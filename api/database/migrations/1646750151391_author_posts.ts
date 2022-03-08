@@ -1,14 +1,16 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
-export default class Courses extends BaseSchema {
-  protected tableName = 'courses'
+export default class AuthorPosts extends BaseSchema {
+  protected tableName = 'author_posts'
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.string('name', 50).notNullable().unique()
-      table.text('description').notNullable()
-      table.integer('category_id').unsigned().references('categories.id').onDelete('CASCADE')
+
+      table.integer('post_id').unsigned().references('id').inTable('posts').notNullable()
+      table.integer('user_id').unsigned().references('id').inTable('users').notNullable()
+      table.integer('author_type_id').unsigned().defaultTo(1)
+      
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })

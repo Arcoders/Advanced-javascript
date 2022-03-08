@@ -28,29 +28,7 @@ Route.group(() => {
 
 Route.group(() => {
 
-  Route.group(() => {
-    Route.get('/', 'CategoriesController.get')
-    Route.post('/', 'CategoriesController.create')
-    Route.delete('/:category_id', 'CategoriesController.delete')
-    Route.get('/:category_id', 'CategoriesController.getLessons')
-  }).prefix('/category')
 
-  Route.group(() => {
-    Route.get('/', 'CoursesController.get')
-    Route.get('/:course_id', 'CoursesController.find')
-    Route.post('/', 'CoursesController.create')
-    Route.delete('/:course_id', 'CoursesController.delete')
-  }).prefix('/course')
-
-  Route.group(() => {
-    Route.get('/', 'LessonsController.get')
-    Route.post('/', 'LessonsController.create')
-    Route.delete('/:lesson_id', 'LessonsController.delete')
-  }).prefix('/lesson')
-
-  Route.group(() => {
-    Route.post('/', 'LikesController.like')
-  }).prefix('/like')
 
 }).prefix('/api').middleware('auth')
 

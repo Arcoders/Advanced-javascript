@@ -1,13 +1,16 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
-export default class Likes extends BaseSchema {
-  protected tableName = 'likes'
+export default class PostTopics extends BaseSchema {
+  protected tableName = 'post_topics'
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.integer('user_id').unsigned().references('users.id').onDelete('CASCADE')
-      table.integer('lesson_id').unsigned().references('lessons.id').onDelete('CASCADE')
+
+      table.integer('post_id').unsigned().references('id').inTable('posts').notNullable()
+      table.integer('topic_id').unsigned().references('id').inTable('topics').notNullable()
+      table.integer('sort_order').notNullable()
+
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
