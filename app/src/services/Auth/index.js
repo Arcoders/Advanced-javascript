@@ -1,27 +1,19 @@
 import axios from '../../libs/axios/index';
+import parsedMessages from '../../parsers/parsedMessages'
 
 const Auth = {
     register: async (credentials) => {
         try {
-            const {data} = await axios().post('auth/register', credentials);
-            return data
+            await axios().post('auth/register', credentials);
        } catch (error) {
-           return {
-               status : 'error',
-               message : 'Server error',
-           };
+           return parsedMessages(error)
        } 
     },
-
     login: async (credentials) => {
         try {
             const {data} = await axios().post('auth/login', credentials);
-            return data 
        } catch (error) {
-           return {
-               status : 'error',
-               message : 'Server error',
-           };
+            return parsedMessages(error)
        } 
     } 
 }

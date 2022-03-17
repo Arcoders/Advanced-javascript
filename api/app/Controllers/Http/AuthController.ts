@@ -1,31 +1,19 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
+import AuthValidator from 'App/Validators/AuthValidator'
+
+
 import User from 'App/Models/User'
 
 export default class AuthController {
 
     public async register({ request, response }: HttpContextContract) {
-        const userSchema = schema.create({
-            username: schema.string(
-              { trim: true },
-              [rules.unique({ table: 'users', column: 'username', caseInsensitive: true })]
-            ),
-            email: schema.string(
-              { trim: true }, 
-              [rules.email(), rules.unique({ table: 'users', column: 'email', caseInsensitive: true })]
-            ),
-            password: schema.string(
-              {}, 
-              [rules.minLength(6)]
-            )
-        })
 
-        const data = await request.validate({schema: userSchema})
+        const data = await request.validate(AuthValidator)
         
         try {
           await User.create(data)
           return response.created()
-
           } catch {
             return response.badRequest('Invalid credentials')
         }
@@ -39,7 +27,11 @@ export default class AuthController {
             const token = await auth.use('api').attempt(email, password)
             return response.send({ token })
           } catch {
-            return response.badRequest('Invalid credentials')
+            return response.badRequest({
+              errors: [{
+                message: 'Invalid credentials'
+              }]
+            })
         }
     }
 

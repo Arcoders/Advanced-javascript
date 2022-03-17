@@ -28,6 +28,9 @@ Route.group(() => {
 
 Route.group(() => {
 
+  Route.group(() => {
+    Route.post('/', 'PostsController.store')
+  }).prefix('/post')
 
 
 }).prefix('/api').middleware('auth')

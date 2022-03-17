@@ -1,37 +1,24 @@
 
 import React, { useState } from 'react'
-import {Link, useHistory} from 'react-router-dom'
-import Auth from '../../services/Auth'
-import './index.css'
+import {Link, useNavigate} from 'react-router-dom'
+import Auth from '../../../services/Auth'
 
 const Login = () => {
-    let history = useHistory();
-    const [error, setError] = useState(null)
-    const [datos, setDatos] = useState({
-        email: '',
-        password: ''
-    })
+    let navigate = useNavigate();
+    const [data, setData] = useState({email: '', password: ''})
+    const [errors, setErrors] = useState(null)
 
-    const handleInputChange = (e) => {
-        setDatos({
-            ...datos,
-            [e.target.name] : e.target.value
-        })
-    }
+    const handleInputChange = ({target: {value, name}}) => setData({...data, [name]: value})
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        const {email, password} = datos
-        const {status, message} = await Auth.login({email, password});
-        if (status === 'success') {
-            history.push("/dashboards"); 
-        }
-        if (message) setError(message)
+    const handleLogin = async () => {
+        const {validations} = await Auth.login(data)
+        if (validations) return setErrors(validations)
+        navigate.push("/dashboards"); 
     }
 
     return (
-        <form onSubmit={handleSubmit} >
-            {error && <span> Warning! &nbsp; {error}</span>}
+        <div>
+            {errors && <span> {errors}</span>}
             <div>
                 <h1>Login</h1>
                 <input 
@@ -46,11 +33,10 @@ const Login = () => {
                     name='password'
                     onChange={handleInputChange} 
                 />
-                
                 <Link to='/register'>Register</Link>
-                <button type='submit'><span>Login</span></button>
+                <button onClick={handleLogin}>Login</button>
             </div>
-        </form>
+        </div>
     )
 
 }
