@@ -10,7 +10,7 @@ const Register = () => {
   const handleInputChange = ({target: {value, name}}) => setData({...data, [name]: value });
 
   const handleRegister = async () => {
-    const { validations } = await Auth.register(data) || {};
+    const validations = await Auth.register(data);
     if (validations) return setErrors(validations)
     navigate("/login");
   };

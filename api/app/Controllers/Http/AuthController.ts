@@ -1,5 +1,4 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import AuthValidator from 'App/Validators/AuthValidator'
 
 
@@ -15,7 +14,7 @@ export default class AuthController {
           await User.create(data)
           return response.created()
           } catch {
-            return response.badRequest('Invalid credentials')
+            return response.validationError()
         }
     }
 
@@ -23,15 +22,11 @@ export default class AuthController {
         const email = request.input('email')
         const password = request.input('password')
         
-        try {
+        try { 
             const token = await auth.use('api').attempt(email, password)
             return response.send({ token })
           } catch {
-            return response.badRequest({
-              errors: [{
-                message: 'Invalid credentials'
-              }]
-            })
+            return response.validationError()
         }
     }
 

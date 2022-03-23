@@ -1,21 +1,24 @@
 import axios from '../../libs/axios/index';
-import parsedMessages from '../../parsers/parsedMessages'
+import parsedMessages from '../../parsers/parsed-messages'
+import tokenStorage from '../../utils/tokenStorage'
 
 const Auth = {
-    register: async (credentials) => {
+    register: async credentials => {
         try {
-            await axios().post('auth/register', credentials);
+            await axios().post('auth/register', credentials)
        } catch (error) {
            return parsedMessages(error)
        } 
     },
-    login: async (credentials) => {
+    login: async credentials => {
         try {
-            const {data} = await axios().post('auth/login', credentials);
+            const {data} = await axios().post('auth/login', credentials)
+            tokenStorage.save(data)
        } catch (error) {
             return parsedMessages(error)
        } 
-    } 
+    },
+    logout: () => tokenStorage.remove()
 }
 
 export default Auth;

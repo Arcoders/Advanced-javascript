@@ -11,9 +11,9 @@ const Login = () => {
     const handleInputChange = ({target: {value, name}}) => setData({...data, [name]: value})
 
     const handleLogin = async () => {
-        const {validations} = await Auth.login(data)
-        if (validations) return setErrors(validations)
-        navigate.push("/dashboards"); 
+        const login = await Auth.login(data)
+        if (login?.validations) return setErrors(login.validations)
+        navigate("/dashboard"); 
     }
 
     return (
