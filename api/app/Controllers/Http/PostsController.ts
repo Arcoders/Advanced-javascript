@@ -1,11 +1,11 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import PostValidator from 'App/Validators/PostValidator'
 
 export default class PostsController {
-  public async index({}: HttpContextContract) {}
-
-  public async create({}: HttpContextContract) {}
-
-  public async store({}: HttpContextContract) {}
+  
+  public async store({request}: HttpContextContract) {
+    const data = await request.validate(PostValidator)
+  }
 
   public async show({}: HttpContextContract) {}
 

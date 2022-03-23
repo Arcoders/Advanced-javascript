@@ -1,49 +1,29 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import Auth from "../../services/Auth";
-import "./index.css";
+import { Link, useNavigate } from "react-router-dom";
+import Auth from "../../../services/Auth";
 
 const Register = () => {
-  const [datos, setDatos] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+  const [data, setData] = useState({ username: "", email: "", password: ""});
+  const [errors, setErrors] = useState([]);
+  let navigate = useNavigate();
 
-  const [error, setError] = useState(null);
+  const handleInputChange = ({target: {value, name}}) => setData({...data, [name]: value });
 
-  let history = useHistory();
-
-  const { name, email, password } = datos;
-
-  const handleInputChange = (e) => {
-    setDatos({
-      ...datos,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { status, message } = await Auth.register({ name, email, password });
-    if (status === "success") {
-      history.push("/login");
-    }
-    if (message)setError(message);
+  const handleRegister = async () => {
+    const validations = await Auth.register(data);
+    if (validations) return setErrors(validations)
+    navigate("/login");
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      {error && (
-        <span> Warning! &nbsp; {error}</span>
-      )}
+    <div>
+      {errors && <span>{errors}</span>}
       <div>
-        <div>
           <h1>Register</h1>
           <input
             type="text"
-            placeholder="Name"
-            name="name"
+            placeholder="Username"
+            name="username"
             onChange={handleInputChange}
           />
           <input
@@ -58,14 +38,10 @@ const Register = () => {
             name="password"
             onChange={handleInputChange}
           />
-
           <Link to="/login">Login</Link>
-          <button>
-            <span>Register</span>
-          </button>
-        </div>
+          <button onClick={handleRegister}>Register</button>
       </div>
-    </form>
+    </div>
   );
 };
 
